@@ -19,14 +19,16 @@ set(Files
 
 add_executable(${PROJECT_NAME} ${Files})
 
+# Подключение OpenGl нужен для генератора VS code
 find_package(OpenGL REQUIRED)
 target_link_libraries(${PROJECT_NAME} PRIVATE opengl32.lib)
 
+# подключение библиотеки GLFW, выгружает функции для openGl
 add_subdirectory(extern/glfw-3.4)
 target_link_libraries(${PROJECT_NAME} PUBLIC glfw)
 target_include_directories(${PROJECT_NAME} PUBLIC extern/glfw-3.4/include)
 
-#подключение библиотеки glad
+# подключение библиотеки glad, зачем она не знаю, но все используют glew
 #add_subdirectory(extern/glad)
 #target_link_libraries(${PROJECT_NAME} PUBLIC Glad)
 
@@ -35,7 +37,11 @@ set(GLEW_DIR "${CMAKE_SOURCE_DIR}/extern/glew-2.1.0")
 set(GLEW_INCLUDE_DIR "${GLEW_DIR}/include")
 set(GLEW_LIBRARY "${GLEW_DIR}/lib/Release/x64/glew32s.lib")
 
+# Подключение библиотеки GLEW
 target_include_directories(${PROJECT_NAME} PRIVATE "${GLEW_INCLUDE_DIR}")
 target_link_libraries(${PROJECT_NAME} PUBLIC "${GLEW_LIBRARY}")
+
+add_subdirectory(lib/containers)
+target_link_libraries(${PROJECT_NAME} PUBLIC containers)
 
 #file(COPY "scripts/" DESTINATION "${CMAKE_BINARY_DIR}/bin/scripts")

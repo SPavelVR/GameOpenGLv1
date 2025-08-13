@@ -8,6 +8,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include "string_t.h"
+
 
 int main() {
     // 1. Инициализация GLFW
@@ -43,6 +45,7 @@ int main() {
     }
     glfwTerminate();
 
-    std::cout << "hellow openGL\n";
+    String str = strinit("hellow openGL + my libraries\n");
+    std::cout << str;
     return 0;
 }
