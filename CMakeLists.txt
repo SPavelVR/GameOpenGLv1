@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.13 FATAL_ERROR)
 
-project(Project1-HelloWorld VERSION 0.0.0 LANGUAGES C CXX)
+project(Project1-HelloWorld VERSION 0.0.1 LANGUAGES C CXX)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}\\bin)
 set(CMAKE_VERBOSE_MAKEFILE ON)
@@ -14,10 +14,14 @@ add_definitions(-DGLEW_STATIC)  # Важно для статической ли�
 
 # Исходные файлы (только .c)
 set(Files 
-    src/mainCPP.cpp
+    src/main.c
+    src/window/window.c
+    src/window/events.c
     )
 
 add_executable(${PROJECT_NAME} ${Files})
+
+target_include_directories(${PROJECT_NAME} PUBLIC src)
 
 # Подключение OpenGl нужен для генератора VS code
 find_package(OpenGL REQUIRED)

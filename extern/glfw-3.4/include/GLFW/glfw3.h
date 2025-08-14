@@ -1,3 +1,12 @@
+
+
+#ifndef _glfw3_h_
+#define _glfw3_h_
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*************************************************************************
  * GLFW 3.4 - www.glfw.org
  * A library for OpenGL, window and input
@@ -25,14 +34,6 @@
  *    distribution.
  *
  *************************************************************************/
-
-#ifndef _glfw3_h_
-#define _glfw3_h_
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 
 /*************************************************************************
  * Doxygen documentation

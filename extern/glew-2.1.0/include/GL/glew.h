@@ -1,3 +1,7 @@
+#ifndef __glew_h__
+#define __glew_h__
+#define __GLEW_H__
+
 /*
 ** The OpenGL Extension Wrangler Library
 ** Copyright (C) 2008-2017, Nigel Stewart <nigels[]users sourceforge net>
@@ -76,10 +80,6 @@
 ** TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 ** MATERIALS OR THE USE OR OTHER DEALINGS IN THE MATERIALS.
 */
-
-#ifndef __glew_h__
-#define __glew_h__
-#define __GLEW_H__
 
 #if defined(__gl_h_) || defined(__GL_H__) || defined(_GL_H) || defined(__X_GL_H)
 #error gl.h included before glew.h
