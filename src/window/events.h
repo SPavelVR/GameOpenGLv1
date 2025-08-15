@@ -3,6 +3,7 @@
 #define __EVENTS_H
 
 #include "window/window.h"
+#include "primitives/rect.h"
 
 int init_events();
 
@@ -15,5 +16,10 @@ int events_jpressed(int keycode);
 
 int events_clicked(int button);
 int events_jclicked(int button);
+
+int events_mouse_move();
+int events_jmouse_move();
+
+FRect events_mouse_position();
 
 #endif

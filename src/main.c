@@ -13,6 +13,8 @@
 #include "window/window.h"
 #include "window/events.h"
 
+// git commit -m "добавлены файлы rect, point и добавлены функции в events: events_mouse_move, events_jmose_move и events_mouse_position."
+
 int main() {
     // 1. Инициализация GLFW
 

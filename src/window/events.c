@@ -17,6 +17,7 @@ typedef struct Events {
     float deltaY;
     float x;
     float y;
+    uint32_t _cursor_frames;
     uint8_t _cursor_locked;
     uint8_t _cursor_started;
 } Events;
@@ -27,11 +28,12 @@ static Events* events = NULL;
 
 void cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
     if (events->_cursor_started) {
-        events->deltaX += xpos - events->x;
-        events->deltaY += ypos - events->y;
+        events->deltaX = xpos - events->x;
+        events->deltaY = ypos - events->y;
     } else {
         events->_cursor_started = 1;
     }
+    events->_cursor_frames = events->_current;
     events->x = (float) xpos;
     events->y = (float) ypos;
 };
@@ -125,4 +127,22 @@ int events_jclicked(int button) {
     if (button < 0 || button >= 8) return 0;
 
     return events->_mouse_button[button] && (events->_mouse_frames[button] == events->_current);
+};
+
+int events_mouse_move() {
+    if (events == NULL) return 0;
+    return events->_cursor_started;
+};
+int events_jmouse_move() {
+    if (events == NULL) return 0;
+    return events->_cursor_started && (events->_cursor_frames == events->_current);
+};
+
+FRect events_mouse_position() {
+    FRect rect;
+    rect.x = events->x;
+    rect.y = events->y;
+    rect.w = events->deltaX;
+    rect.h = events->deltaY;
+    return rect;
 };

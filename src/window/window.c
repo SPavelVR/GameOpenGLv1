@@ -7,15 +7,17 @@
 
 typedef struct Window {
     GLFWwindow* window;
+    int width;
+    int height;
+    char* title;
 } Window;
 
 static Window* window = NULL;
 
 int init_window(int width, int height, const String title) {
     if (window == NULL) {
-        window = malloc(sizeof(Window));
+        window = calloc(1, sizeof(Window));
         check_ptr(window);
-        window->window = NULL;
     }
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -23,7 +25,10 @@ int init_window(int width, int height, const String title) {
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 
-    window->window = glfwCreateWindow(width, height, "Hellow OpenGL", NULL, NULL);
+    window->window = glfwCreateWindow(width, height, title, NULL, NULL);
+    window->height = width;
+    window->height = height;
+    window->title = title;
 
     check_ptr(window->window);
 
