@@ -9,15 +9,15 @@
 
 typedef struct Events {
     uint8_t* _keys;
-    uint32_t* _frames;
-    uint32_t _current;
+    uint64_t* _frames;
+    uint64_t _current;
     uint8_t* _mouse_button;
-    uint32_t* _mouse_frames;
+    uint64_t* _mouse_frames;
     float deltaX;
     float deltaY;
     float x;
     float y;
-    uint32_t _cursor_frames;
+    uint64_t _cursor_frames;
     uint8_t _cursor_locked;
     uint8_t _cursor_started;
 } Events;

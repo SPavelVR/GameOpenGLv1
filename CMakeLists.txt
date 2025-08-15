@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.13 FATAL_ERROR)
 
-project("The Cave" VERSION 0.0.1 LANGUAGES C CXX)
+project(TheCave VERSION 0.0.1 LANGUAGES C CXX)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}\\bin)
 set(CMAKE_VERBOSE_MAKEFILE ON)
@@ -16,14 +16,14 @@ set(Files
     src/main.c
     src/window/window.c
     src/window/events.c
+    src/graphics/shader.c
+    src/loadsys/loadshaders.c
     )
 
 find_package(OpenGL REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(PNG REQUIRED)
 find_package(GLEW REQUIRED)
-
-
 
 add_executable(${PROJECT_NAME} ${Files})
 
@@ -45,3 +45,4 @@ add_subdirectory(lib/containers)
 target_link_libraries(${PROJECT_NAME} PUBLIC containers)
 
 file(COPY "extern/glew/" DESTINATION "${CMAKE_BINARY_DIR}/bin")
+file(COPY "res/" DESTINATION "${CMAKE_BINARY_DIR}/bin")

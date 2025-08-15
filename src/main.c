@@ -12,6 +12,7 @@
 
 #include "window/window.h"
 #include "window/events.h"
+#include "graphics/shader.h"
 
 #include <png.h>
 
@@ -22,6 +23,14 @@ int main() {
 
     init_window(1280, 720, "Hellow Open GELL");
     init_events();
+
+    Shader* shader = init_shaders("shaders/main.vert", "shaders/main.frag");
+
+    if (shader == NULL) {
+        glfwTerminate();
+        printf("Error, no shader!!!\n");
+        return 1;
+    }
 
     glClearColor(0, 0, 0, 1);
     while (!window_should_close()) {
