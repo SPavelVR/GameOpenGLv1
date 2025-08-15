@@ -13,6 +13,8 @@
 #include "window/window.h"
 #include "window/events.h"
 
+#include <png.h>
+
 // git commit -m "добавлены файлы rect, point и добавлены функции в events: events_mouse_move, events_jmose_move и events_mouse_position."
 
 int main() {
@@ -42,7 +44,7 @@ int main() {
         window_swap_buffer();
     }
 
-    printf("TEPERJ TOLJKO MOI FUNKCZII\n");
+    printf("zdesj PNG\n");
 
     free_window();
     free_events();
