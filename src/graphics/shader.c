@@ -7,7 +7,11 @@
 #include "graphics/shader.h"
 #include "loadsys/loadshaders.h"
 
-void use_shader(Shader* shader);
+void use_shader(Shader* shader) {
+    if (shader == NULL) return  ;
+    
+    glUseProgram(shader->id);
+};
 
 Shader* init_shaders(const String vertexFile, const String fragmentFile) {
     Shader* shader = load_shaders(vertexFile, fragmentFile);

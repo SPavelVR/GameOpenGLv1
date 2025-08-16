@@ -99,8 +99,6 @@ void free_events() {
 void pull_events() {
 
     events->_current++;
-    events->deltaX = 0.0f;
-    events->deltaY = 0.0f;
 
     glfwPollEvents();
 };

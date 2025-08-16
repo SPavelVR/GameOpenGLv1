@@ -28,7 +28,7 @@ int init_window(int width, int height, const String title) {
     window->window = glfwCreateWindow(width, height, title, NULL, NULL);
     window->height = width;
     window->height = height;
-    window->title = title;
+    window->title = strinit(title);
 
     check_ptr(window->window);
 
@@ -47,6 +47,7 @@ int init_window(int width, int height, const String title) {
 };
 
 void free_window() {
+    if (window->title != NULL) strfree(window->title);
     free(window);
     window = NULL;
 };
