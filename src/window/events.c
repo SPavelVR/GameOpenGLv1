@@ -58,6 +58,10 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
     }
 };
 
+void window_size_callback(GLFWwindow* window, int width, int height) {
+    glViewport(0, 0, width, height);
+}
+
 // END CALLBACK ---------------------------------------------------
 
 int init_events() {
@@ -79,6 +83,7 @@ int init_events() {
     glfwSetKeyCallback(window, key_callback);
     glfwSetMouseButtonCallback(window, mouse_button_callback);
     glfwSetCursorPosCallback(window, cursor_position_callback);
+    glfwSetWindowSizeCallback(window, window_size_callback);
 
     return 0;
 };

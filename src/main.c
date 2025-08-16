@@ -9,7 +9,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "string_t.h"
+#include <string_t.h>
+#include <matrix4.h>
 
 #include "window/window.h"
 #include "window/events.h"
@@ -27,6 +28,8 @@ float vertices[] = {
 		1.0f, 1.0f, 0.0f, 1.0f, 1.0f,
 	   -1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
 };
+
+Matrix4 matrix;
 
 int main() {
     // 1. Инициализация GLFW
@@ -70,7 +73,6 @@ int main() {
 
     Texture* texture = init_texture("textures/rgbTest.png");
     if (texture == NULL || texture->id == 0) {
-
         free_shader(shader);
         glfwTerminate();
         printf("Error, no texture!!!\n");
@@ -83,6 +85,8 @@ int main() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+    float roat = 0.0f;
+
     while (!window_should_close()) {
         pull_events();
 
@@ -91,7 +95,7 @@ int main() {
         }
 
         if (events_clicked(GLFW_MOUSE_BUTTON_LEFT)) {
-            glClearColor(0.75, 0.1, 0.2, 1);
+            glClearColor(0.9, 0.9, 0.9, 1);
         }
 
         if (events_clicked(GLFW_MOUSE_BUTTON_RIGHT)) {
@@ -100,9 +104,13 @@ int main() {
 
         glClear(GL_COLOR_BUFFER_BIT);
 
+        mat4_set_scale(matrix, 0.2f);
+        mat4_mul_rotade_d(matrix, roat, 2);
+        mat4_mul_rotade_d(matrix, -roat, 1);
+        roat += 1;
         // Рисуем triangles
         use_shader(shader);
-
+        uniform_matrix_shader(shader, "matrix", (float*) matrix);
         bind_texture(texture);
 
         glBindVertexArray(VAO);
@@ -112,7 +120,7 @@ int main() {
         window_swap_buffer();
 
         if (s != now->tm_sec) {
-            printf("Time pass 1s : %d\n", c);
+            printf("FPS: %d\n", c);
             cs++;
             s = now->tm_sec;
             c = 0;

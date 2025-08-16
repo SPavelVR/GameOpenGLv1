@@ -11,6 +11,7 @@ typedef struct {
 } Shader;
 
 void use_shader(Shader* shader);
+void uniform_matrix_shader(Shader* shader, String name, float matrix4[16]);
 
 Shader* init_shaders(const String vertexFile, const String fragmentFile);
 void free_shader(Shader* shader);

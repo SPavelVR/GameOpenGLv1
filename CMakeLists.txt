@@ -51,6 +51,9 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 add_subdirectory(lib/containers)
 target_link_libraries(${PROJECT_NAME} PUBLIC containers)
 
+add_subdirectory(lib/matrix)
+target_link_libraries(${PROJECT_NAME} PUBLIC matrix4)
+
 #file(COPY "extern/glew/" DESTINATION "${CMAKE_BINARY_DIR}/bin")
 
 if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
