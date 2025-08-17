@@ -13,11 +13,13 @@ void use_shader(Shader* shader) {
     glUseProgram(shader->id);
 };
 
-void uniform_matrix_shader(Shader* shader, String name, float matrix4[16]) {
+void uniform_matrix_shader(Shader* shader, String name, Matrix4 matrix4) {
     if (shader == NULL || name == NULL || shader->id == 0) return   ;
 
     GLuint translate = glGetUniformLocation(shader->id, name);
-    glUniformMatrix4fv( translate, 1, GL_FALSE, matrix4);
+    mat4_trans(matrix4);
+    glUniformMatrix4fv( translate, 1, GL_FALSE, (float*) matrix4);
+    mat4_trans(matrix4);
 };
 
 Shader* init_shaders(const String vertexFile, const String fragmentFile) {

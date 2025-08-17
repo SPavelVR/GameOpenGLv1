@@ -2,9 +2,8 @@
 #include <stdio.h>
 #include <time.h>
 
-#ifndef GLEW_STATIC
-#define GLEW_STATIC
-#endif
+#define _USE_MATH_DEFINES // for C
+#include <math.h>
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -16,11 +15,11 @@
 #include "window/events.h"
 #include "graphics/shader.h"
 #include "graphics/texture.h"
-
-#include <png.h>
+#include "camera/camera.h"
 
 float vertices[] = {
-        -1.0f,-1.0f, 0.0f, 0.0f, 0.0f,
+		// x    y     z     u     v
+	   -1.0f,-1.0f, 0.0f, 0.0f, 0.0f,
 		1.0f,-1.0f, 0.0f, 1.0f, 0.0f,
 	   -1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
 
@@ -29,7 +28,57 @@ float vertices[] = {
 	   -1.0f, 1.0f, 0.0f, 0.0f, 1.0f,
 };
 
-Matrix4 matrix;
+static void print_matr4(Matrix4 mat) {
+    printf("Matrix4: \n");
+    for (char i = 0; i < 4; i++)
+    {
+        for (char j = 0; j < 4; j++)
+        {
+            printf("%f ", mat[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+
+void move_player(Camera* camera) {
+    if (events_pressed(GLFW_KEY_W)) {
+            float* pos = camera_get_position(camera);
+            pos[2] += 0.016f;
+    }
+
+    if (events_pressed(GLFW_KEY_S)) {
+            float* pos = camera_get_position(camera);
+            pos[2] -= 0.016f;
+    }
+
+    if (events_pressed(GLFW_KEY_A)) {
+            float* pos = camera_get_position(camera);
+            pos[0] += 0.016f;
+    }
+
+    if (events_pressed(GLFW_KEY_D)) {
+            float* pos = camera_get_position(camera);
+            pos[0] -= 0.016f;
+    }
+
+    if (events_pressed(GLFW_KEY_Q)) {
+            camera_rotate(camera, 0 , -0.016f , 0);
+    }
+
+    if (events_pressed(GLFW_KEY_E)) {
+            camera_rotate(camera, 0, 0.016f , 0);
+    }
+
+    if (events_jmouse_move() && 0) {
+        int w, h;
+        window_get_size(&w, &h);
+
+        FRect mp = events_mouse_position();
+
+        camera_rotate(camera, 0, -(mp.w / ((float) w)), 0);
+    }
+}
 
 int main() {
     // 1. Инициализация GLFW
@@ -45,7 +94,7 @@ int main() {
 
 
     // Работа с шейдорами
-    Shader* shader = init_shaders("shaders/texture.vert", "shaders/texture.frag");
+    Shader* shader = init_shaders("shaders/textureCamera.vert", "shaders/texture.frag");
 
     if (shader == NULL || shader->id == 0) {
         glfwTerminate();
@@ -79,13 +128,29 @@ int main() {
         return 1;
     }
 
-    glClearColor(0, 0, 0, 1);
+    glClearColor(0, 0, 0, 0);
 
     glEnable(GL_CULL_FACE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    float roat = 0.0f;
+    Vector4 pos = {0, 0, 0, 10};
+    Camera* camera = init_camera(pos, 120);
+
+    Matrix4 model, proj, view;
+    
+    mat4_set_scale(model, 0.2f);
+    //mat4_set_rotade_d(model, 90, 2);
+    //mat4_mul_scale(model, 0.2f);
+    //mat4_mul_translate(model, 0.2f, 0, 0);
+    
+    //mat4_set_translate(model, 1, 1, 0);
+    //setEMatrix4(model, 1.0f);
+
+    setEMatrix4(proj, 1.0f);
+    setEMatrix4(view, 1.0f);
+    //mat4_set_rotade_d(view, 90, 2);
+
 
     while (!window_should_close()) {
         pull_events();
@@ -103,14 +168,22 @@ int main() {
         }
 
         glClear(GL_COLOR_BUFFER_BIT);
-
-        mat4_set_scale(matrix, 0.2f);
-        mat4_mul_rotade_d(matrix, roat, 2);
-        mat4_mul_rotade_d(matrix, -roat, 1);
-        roat += 1;
         // Рисуем triangles
+
+        move_player(camera);
+
+        
         use_shader(shader);
-        uniform_matrix_shader(shader, "matrix", (float*) matrix);
+
+        camera_set_projection(camera, proj);
+        camera_set_view(camera, view);
+
+        uniform_matrix_shader(shader, "model", model);
+        uniform_matrix_shader(shader, "proj", proj);
+        uniform_matrix_shader(shader, "view", view);
+
+        //mat4_mul_translate(model, 0, 0, -1.0f);
+
         bind_texture(texture);
 
         glBindVertexArray(VAO);
@@ -120,7 +193,7 @@ int main() {
         window_swap_buffer();
 
         if (s != now->tm_sec) {
-            printf("FPS: %d\n", c);
+            print_matr4(view);
             cs++;
             s = now->tm_sec;
             c = 0;
@@ -134,6 +207,7 @@ int main() {
 
     free_shader(shader);
     free_texture(texture);
+    free_camera(camera);
 
     glDeleteBuffers(1, &VBO);
     glDeleteVertexArrays(1, &VAO);

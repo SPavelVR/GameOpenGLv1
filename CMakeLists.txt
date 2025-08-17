@@ -22,6 +22,7 @@ set(Files
     src/graphics/texture.c
     src/loadsys/loadshaders.c
     src/loadsys/loadTextures.c
+    src/camera/camera.c
     )
 
 find_package(OpenGL REQUIRED)

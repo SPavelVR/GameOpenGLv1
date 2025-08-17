@@ -17,6 +17,9 @@ void window_swap_buffer();
 
 void window_set_should_close(int flag);
 
+void window_set_size(int width, int height);
+void window_get_size(int* width, int* height);
+
 GLFWwindow* get_window();
 
 

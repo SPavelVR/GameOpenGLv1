@@ -7,6 +7,8 @@
 
 typedef struct Window {
     GLFWwindow* window;
+    int width;
+    int height;
     char* title;
 } Window;
 
@@ -24,6 +26,8 @@ int init_window(int width, int height, const String title) {
     glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 
     window->window = glfwCreateWindow(width, height, title, NULL, NULL);
+    window->width = width;
+    window->height = height;
     window->title = strinit(title);
 
     check_ptr(window->window);
@@ -56,8 +60,17 @@ void window_swap_buffer() {
     glfwSwapBuffers(window->window);
 }
 
+void window_set_size(int width, int height) {
+    window->width = width;
+    window->height = height;
+};
+
+void window_get_size(int* width, int* height) {
+    *width = window->width;
+    *height = window->height;
+}; 
+
 GLFWwindow* get_window() {
-    if (window == NULL) return NULL;
     return window->window;
 };
 

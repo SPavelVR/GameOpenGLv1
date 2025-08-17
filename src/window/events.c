@@ -60,6 +60,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 
 void window_size_callback(GLFWwindow* window, int width, int height) {
     glViewport(0, 0, width, height);
+    window_set_size(width, height);
 }
 
 // END CALLBACK ---------------------------------------------------
