@@ -6,17 +6,19 @@
 
 typedef struct Camera {
 
-    Vector4 front;
-    Vector4 up;
-    Vector4 right;
-    Vector4 position;
+    Vector3 front;
+    Vector3 up;
+    Vector3 right;
+    Vector3 position;
     Matrix4 rotation;
+    float rotate_x;
+    float rotate_y;
+    float rotate_z;
     float fov;
     unsigned int id;
-
 } Camera;
 
-Camera* init_camera(Vector4 position, float fov);
+Camera* init_camera(Vector3 position, float fov, float sr_x, float sr_y, float sr_z);
 void free_camera(Camera* camera);
 
 void camera_update_vectors(Camera* camera);

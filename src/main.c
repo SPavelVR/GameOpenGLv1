@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <time.h>
 
+#define GLEW_STATIC
+
 #define _USE_MATH_DEFINES // for C
 #include <math.h>
 
@@ -54,12 +56,22 @@ void move_player(Camera* camera) {
 
     if (events_pressed(GLFW_KEY_A)) {
             float* pos = camera_get_position(camera);
-            pos[0] += 0.016f;
+            pos[0] -= 0.016f;
     }
 
     if (events_pressed(GLFW_KEY_D)) {
             float* pos = camera_get_position(camera);
-            pos[0] -= 0.016f;
+            pos[0] += 0.016f;
+    }
+
+    if (events_pressed(GLFW_KEY_I)) {
+            float* pos = camera_get_position(camera);
+            pos[1] += 0.016f;
+    }
+
+    if (events_pressed(GLFW_KEY_O)) {
+            float* pos = camera_get_position(camera);
+            pos[1] -= 0.016f;
     }
 
     if (events_pressed(GLFW_KEY_Q)) {
@@ -121,6 +133,7 @@ int main() {
     // endWorkWithShaders
 
     Texture* texture = init_texture("textures/rgbTest.png");
+
     if (texture == NULL || texture->id == 0) {
         free_shader(shader);
         glfwTerminate();
@@ -130,12 +143,12 @@ int main() {
 
     glClearColor(0, 0, 0, 0);
 
-    glEnable(GL_CULL_FACE);
+    //glEnable(GL_CULL_FACE);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    Vector4 pos = {0, 0, 0, 10};
-    Camera* camera = init_camera(pos, 120);
+    Vector3 pos = {0, 0, 10};
+    Camera* camera = init_camera(pos, 120, 0, 0, 0);
 
     Matrix4 model, proj, view;
     

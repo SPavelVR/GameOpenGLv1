@@ -17,16 +17,21 @@ static void print_matr4(Matrix4 mat) {
     }
 }
 
+static unsigned int id_camera = 0;
 
-Camera* init_camera(Vector4 position, float fov) {
+
+Camera* init_camera(Vector3 position, float fov, float sr_x, float sr_y, float sr_z) {
     Camera* camera = calloc(1, sizeof(Camera));
 
     if (camera == NULL) return NULL;
 
-    copyVector4(camera->position, position);
+    copyVector3(camera->position, position);
     camera->fov = fov;
     setEMatrix4(camera->rotation, 1.0f);
     camera_update_vectors(camera);
+    camera_rotate(camera, sr_x, sr_y, sr_z);
+    id_camera++;
+    camera->id = id_camera;
     return camera;
 };
 
@@ -39,16 +44,14 @@ void free_camera(Camera* camera) {
 void camera_update_vectors(Camera* camera) {
     Vector4 temp;
 
-    setVector4(temp, 0, 0, 1);
-    vm_mul(camera->front, camera->rotation, temp);
+    setVector4(temp, 0, 0, -1);
+    vm3_mul(camera->front, camera->rotation, temp);
 
     setVector4(temp, 1, 0, 0);
-    vm_mul(camera->right, camera->rotation, temp);
+    vm3_mul(camera->right, camera->rotation, temp);
 
     setVector4(temp, 0, 1, 0);
-    vm_mul(camera->up, camera->rotation, temp);
-
-
+    vm3_mul(camera->up, camera->rotation, temp);
 };
 
 void camera_rotate(Camera* camera, float x, float y, float z) {
@@ -70,6 +73,7 @@ void camera_set_projection(Camera* camera, Matrix4 mat) {
     
     float aspect = ((float) w) / ((float) h);
 
+    //mat4_ortho(mat, (float) w, (float) h, 100.0f);
     mat4_perspectiv(mat, camera->fov, aspect, 0.1f, 100.0f);
 };
 

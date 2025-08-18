@@ -1,9 +1,6 @@
-cmake_minimum_required(VERSION 3.13 FATAL_ERROR)
+cmake_minimum_required(VERSION 4.0 FATAL_ERROR)
 
 project(TheCave VERSION 0.0.1 LANGUAGES C CXX)
-
-set(VCPKG_CRT_LINKAGE static)
-set(VCPKG_LIBRARY_LINKAGE static)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}\\bin)
 set(CMAKE_VERBOSE_MAKEFILE ON)
@@ -57,9 +54,5 @@ target_link_libraries(${PROJECT_NAME} PUBLIC matrix4)
 
 #file(COPY "extern/glew/" DESTINATION "${CMAKE_BINARY_DIR}/bin")
 
-if(NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
-    file(COPY "res/" DESTINATION "${CMAKE_BINARY_DIR}/bin/")
-    message(STATUS "Файлы шейдеров скопированы в ${CMAKE_BINARY_DIR}/bin")
-else()
-    message(STATUS "Debug mode - копирование пропущено")
-endif()
+file(COPY "res/" DESTINATION "${CMAKE_BINARY_DIR}/bin/")
+message(STATUS "Файлы шейдеров скопированы в ${CMAKE_BINARY_DIR}/bin")
