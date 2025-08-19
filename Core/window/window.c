@@ -1,7 +1,4 @@
-
 #include <stdlib.h>
-
-#include "util.h"
 
 #include "window/window.h"
 
@@ -17,7 +14,7 @@ static Window* window = NULL;
 int init_window(int width, int height, const String title) {
     if (window == NULL) {
         window = calloc(1, sizeof(Window));
-        check_ptr(window);
+        if (window == NULL) return 1;
     }
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -30,7 +27,7 @@ int init_window(int width, int height, const String title) {
     window->height = height;
     window->title = strinit(title);
 
-    check_ptr(window->window);
+    if (window->window == NULL) return 1;
 
     glfwMakeContextCurrent(window->window);
 
@@ -76,4 +73,10 @@ GLFWwindow* get_window() {
 
 void window_set_should_close(int flag) {
     glfwSetWindowShouldClose(window->window, flag);
+};
+
+void window_set_cursor_mode(int mode) 
+{
+    if (window != NULL)
+        glfwSetInputMode(window->window, GLFW_CURSOR, mode);
 };

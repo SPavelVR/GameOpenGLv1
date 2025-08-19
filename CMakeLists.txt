@@ -13,8 +13,8 @@ set(CMAKE_C_EXTENSIONS OFF)        # Отключить GNU-расширения
 # Исходные файлы (только .c)
 set(Files 
     src/main.c
-    src/window/window.c
-    src/window/events.c
+#    src/window/window.c
+#    src/window/events.c
     src/graphics/shader.c
     src/graphics/texture.c
     src/loadsys/loadshaders.c
@@ -51,6 +51,17 @@ target_link_libraries(${PROJECT_NAME} PUBLIC containers)
 
 add_subdirectory(lib/matrix)
 target_link_libraries(${PROJECT_NAME} PUBLIC matrix4)
+
+add_subdirectory(Core)
+target_link_libraries(CaveCore PUBLIC   opengl32
+                                        glfw
+                                        GLEW::GLEW
+                                        PNG::PNG
+                                        ${LUA_LIBRARIES}
+                                        containers
+                                        )
+
+target_link_libraries(${PROJECT_NAME} PUBLIC CaveCore)
 
 #file(COPY "extern/glew/" DESTINATION "${CMAKE_BINARY_DIR}/bin")
 

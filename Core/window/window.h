@@ -1,4 +1,3 @@
-
 #ifndef __WINDOW_H
 #define __WINDOW_H
 
@@ -21,6 +20,8 @@ void window_set_size(int width, int height);
 void window_get_size(int* width, int* height);
 
 GLFWwindow* get_window();
+
+void window_set_cursor_mode(int mode);
 
 
 #endif

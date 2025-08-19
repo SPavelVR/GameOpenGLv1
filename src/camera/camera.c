@@ -55,9 +55,16 @@ void camera_update_vectors(Camera* camera) {
 };
 
 void camera_rotate(Camera* camera, float x, float y, float z) {
-    mat4_mul_rotade_r(camera->rotation, z, 2);
-    mat4_mul_rotade_r(camera->rotation, y, 1);
-    mat4_mul_rotade_r(camera->rotation, x, 0);
+
+    camera->rotate_x += x;
+    camera->rotate_y += y;
+    camera->rotate_z += z;
+
+    setEMatrix4(camera->rotation, 1.0f);
+
+    mat4_mul_rotade_r(camera->rotation, camera->rotate_z, 2);
+    mat4_mul_rotade_r(camera->rotation, camera->rotate_y, 1);
+    mat4_mul_rotade_r(camera->rotation, camera->rotate_x, 0);
 
     camera_update_vectors(camera);
 };
@@ -95,4 +102,24 @@ void camera_set_projview(Camera* camera, Matrix4 out) {
     camera_set_projection(camera, proj);
     camera_set_view(camera, view);
     mat4_mul(out, proj, view);
+};
+
+float* camera_get_front(Camera* camera) 
+{
+    if (camera == NULL) return NULL;
+
+    return (float*) camera->front;
+}
+
+float* camera_get_right(Camera* camera)
+{
+    if (camera == NULL) return NULL;
+
+    return (float*) camera->right;
+};
+float* camera_get_up(Camera* camera)
+{
+    if (camera == NULL) return NULL;
+
+    return (float*) camera->up;
 };

@@ -1,9 +1,8 @@
-
 #ifndef __EVENTS_H
 #define __EVENTS_H
 
 #include "window/window.h"
-#include "primitives/rect.h"
+#include "rect.h"
 
 int init_events();
 
@@ -21,5 +20,8 @@ int events_mouse_move();
 int events_jmouse_move();
 
 FRect events_mouse_position();
+
+void events_tougle_cursor();
+int events_get_cursor_mode();
 
 #endif

@@ -29,5 +29,8 @@ void camera_set_view(Camera* camera, Matrix4 mat);
 void camera_set_projview(Camera* camera, Matrix4 out);
 
 float* camera_get_position(Camera* camera);
+float* camera_get_front(Camera* camera);
+float* camera_get_right(Camera* camera);
+float* camera_get_up(Camera* camera);
 
 #endif

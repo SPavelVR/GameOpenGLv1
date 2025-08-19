@@ -42,26 +42,39 @@ static void print_matr4(Matrix4 mat) {
     }
 }
 
+float deltaSpead = 0.016f;
 
 void move_player(Camera* camera) {
     if (events_pressed(GLFW_KEY_W)) {
             float* pos = camera_get_position(camera);
-            pos[2] += 0.016f;
+            float* front = camera_get_front(camera);
+            pos[0] += front[0] * deltaSpead;
+            pos[1] += front[1] * deltaSpead;
+            pos[2] += front[2] * deltaSpead;
     }
 
     if (events_pressed(GLFW_KEY_S)) {
             float* pos = camera_get_position(camera);
-            pos[2] -= 0.016f;
+            float* front = camera_get_front(camera);
+            pos[0] -= front[0] * deltaSpead;
+            pos[1] -= front[1] * deltaSpead;
+            pos[2] -= front[2] * deltaSpead;
     }
 
     if (events_pressed(GLFW_KEY_A)) {
             float* pos = camera_get_position(camera);
-            pos[0] -= 0.016f;
+            float* front = camera_get_right(camera);
+            pos[0] -= front[0] * deltaSpead;
+            pos[1] -= front[1] * deltaSpead;
+            pos[2] -= front[2] * deltaSpead;
     }
 
     if (events_pressed(GLFW_KEY_D)) {
             float* pos = camera_get_position(camera);
-            pos[0] += 0.016f;
+            float* front = camera_get_right(camera);
+            pos[0] += front[0] * deltaSpead;
+            pos[1] += front[1] * deltaSpead;
+            pos[2] += front[2] * deltaSpead;
     }
 
     if (events_pressed(GLFW_KEY_I)) {
@@ -82,13 +95,18 @@ void move_player(Camera* camera) {
             camera_rotate(camera, 0, 0.016f , 0);
     }
 
-    if (events_jmouse_move() && 0) {
+    if (events_jpressed(GLFW_KEY_TAB)) {
+            events_tougle_cursor();
+    }
+
+
+    if (events_jmouse_move() && events_get_cursor_mode()) {
         int w, h;
         window_get_size(&w, &h);
 
         FRect mp = events_mouse_position();
 
-        camera_rotate(camera, 0, -(mp.w / ((float) w)), 0);
+        camera_rotate(camera, -(mp.h / ((float) h)) , (mp.w / ((float) w)), 0);
     }
 }
 
@@ -150,9 +168,14 @@ int main() {
     Vector3 pos = {0, 0, 10};
     Camera* camera = init_camera(pos, 120, 0, 0, 0);
 
-    Matrix4 model, proj, view;
+    Matrix4 model = {
+        0.4, 0, 0, 0,
+        0, 0.2, 0, 0,
+        0, 0, 0.2, 0,
+        0, 0, 0, 1
+    }, proj, view;
     
-    mat4_set_scale(model, 0.2f);
+    //mat4_set_scale(model, 0.2f);
     //mat4_set_rotade_d(model, 90, 2);
     //mat4_mul_scale(model, 0.2f);
     //mat4_mul_translate(model, 0.2f, 0, 0);

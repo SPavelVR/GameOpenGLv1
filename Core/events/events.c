@@ -1,11 +1,8 @@
-
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
 
-#include "util.h"
-
-#include "window/events.h"
+#include "events/events.h"
 
 typedef struct Events {
     uint8_t* _keys;
@@ -30,7 +27,7 @@ void cursor_position_callback(GLFWwindow* window, double xpos, double ypos) {
     if (events->_cursor_started) {
         events->deltaX = xpos - events->x;
         events->deltaY = ypos - events->y;
-    } else {
+    } else { 
         events->_cursor_started = 1;
     }
     events->_cursor_frames = events->_current;
@@ -69,9 +66,11 @@ int init_events() {
     if (events == NULL) {
         events = malloc(sizeof(Events));
 
-        check_ptr(events);
+        if (events == NULL) return 1;
 
         memset(events, 0, sizeof(Events));
+    } else {
+        return 0;
     }
     GLFWwindow* window = get_window();
 
@@ -81,10 +80,14 @@ int init_events() {
     events->_mouse_button = calloc(8, sizeof(uint8_t));
     events->_mouse_frames = calloc(8, sizeof(uint32_t));
 
+    events->_cursor_locked = 0;
+
     glfwSetKeyCallback(window, key_callback);
     glfwSetMouseButtonCallback(window, mouse_button_callback);
     glfwSetCursorPosCallback(window, cursor_position_callback);
     glfwSetWindowSizeCallback(window, window_size_callback);
+
+    events_tougle_cursor();
 
     return 0;
 };
@@ -149,4 +152,17 @@ FRect events_mouse_position() {
     rect.w = events->deltaX;
     rect.h = events->deltaY;
     return rect;
+};
+
+void events_tougle_cursor() {
+    if (events == NULL) return  ;
+
+    events->_cursor_locked = !(events->_cursor_locked);
+    window_set_cursor_mode(events->_cursor_locked ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL);
+
+};
+int events_get_cursor_mode() {
+    if (events == NULL) return -1;
+
+    return events->_cursor_locked;
 };
